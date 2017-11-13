@@ -14,6 +14,4 @@ public class RemoteSocketInfo
 	private Socket remoteSocket;
 	//连接开始的时间
 	private Date connectedTime;
-	//远程客户端的机器信息
-	private ClientInfo clientInfo; 
 }
