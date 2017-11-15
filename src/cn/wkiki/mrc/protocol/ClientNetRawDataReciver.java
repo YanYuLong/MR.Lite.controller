@@ -46,7 +46,6 @@ public class ClientNetRawDataReciver
 		{
 			if (remoteSocket.getInputStream().available() > 0)
 			{
-				Socket socket = new 
 				InputStream remoteInputStream = remoteSocket.getInputStream();
 				remoteInputStream.read(messageHeadBuff);
 			}
