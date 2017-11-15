@@ -44,6 +44,7 @@ public class SocketPool
 		scanThread = new Thread(() -> {
 			ScanMethod();
 		});
+		scanThread.start();
 	}
 
 	/**
@@ -94,14 +95,33 @@ public class SocketPool
 			try
 			{
 				lock.writeLock().lock();
-				socketTable.forEach((k,v)->{
+				socketTable.forEach((k, v) -> {
 					Socket socket = v.getRemoteSocket();
+					// 客户端主动关闭了连接
+					if (socket.isInputShutdown())
+					{
+
+					}
+					else
+					{
+						try
+						{
+							if (socket.getInputStream().available() > 0)
+							{
+
+							}
+						}
+						catch (Exception e)
+						{
+						}
+					}
 				});
 			}
-			finally {
+			finally
+			{
 				lock.writeLock().unlock();
 			}
-			
+
 		}
 	}
 }

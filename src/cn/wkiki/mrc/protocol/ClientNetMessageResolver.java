@@ -8,5 +8,5 @@ package cn.wkiki.mrc.protocol;
  */
 public interface ClientNetMessageResolver
 {
-	Object resloverMessage();
+	Object resloverMessage(Object message);
 }
