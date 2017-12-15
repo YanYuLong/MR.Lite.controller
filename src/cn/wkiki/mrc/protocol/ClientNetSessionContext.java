@@ -9,17 +9,19 @@ package cn.wkiki.mrc.protocol;
 public class ClientNetSessionContext
 {
 	// 数据发送器
-	private ClientNetRawDataReciver reciver;
+	private ClientMessageRecvier reciver;
 
 	// 数据接收器
-	private ClientNetRawDataSender sender;
+	private ClientMessageSender sender;
 
 	// 客户端的远程连接
 	private RemoteSocketInfo remoteSocketInfo;
 
 	// Constructor
-	public ClientNetSessionContext()
+	public ClientNetSessionContext(ClientMessageRecvier reciver,ClientMessageSender sender)
 	{
+		this.reciver = reciver;
+		this.sender = sender;
 	}
 
 	/**

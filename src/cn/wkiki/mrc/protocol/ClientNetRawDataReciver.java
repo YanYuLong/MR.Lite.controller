@@ -2,16 +2,8 @@ package cn.wkiki.mrc.protocol;
 
 import java.io.InputStream;
 import java.net.Socket;
-import java.nio.charset.Charset;
-
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sun.corba.se.impl.ior.ByteBuffer;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
-import sun.util.resources.zh.LocaleNames_zh_SG;
 
 /**
  * 客户端网络原始数据流接收器(此处会对原始数据流的格式做约定)
@@ -64,24 +56,17 @@ public class ClientNetRawDataReciver
 						{
 							int contentLength = Integer.parseInt(contentLengthStr);
 							byte[] contentBuff = new byte[contentLength];
-							try
+							// 阻塞IO
+							int realContentReciveCount = remoteInputStream.read(contentBuff);
+							// 所有数据接收成功
+							if (realContentReciveCount == contentBuff.length)
 							{
-								// 阻塞IO
-								int realContentReciveCount = remoteInputStream.read(contentBuff);
-								// 所有数据接收成功
-								if (realContentReciveCount == contentBuff.length)
-								{
-									result = contentBuff;
-								}
-								else
-								{
-									throw new RuntimeException("接收报文内容数据时出现报文长度校验失败异常：客户端报告长度:" + contentLengthStr
-											+ "实际接收到的长度:" + realContentReciveCount);
-								}
+								result = contentBuff;
 							}
-							catch (Exception e)
+							else
 							{
-								throw e;
+								throw new RuntimeException("接收报文内容数据时出现报文长度校验失败异常：客户端报告长度:" + contentLengthStr
+										+ "实际接收到的长度:" + realContentReciveCount);
 							}
 						}
 						catch (NumberFormatException e)
@@ -89,7 +74,6 @@ public class ClientNetRawDataReciver
 							throw new RuntimeException("接受客户端报文时发生异常，异常类型：报文负载长度字符转换类型失败：失败字符：" + contentLengthStr
 									+ remoteSocketInfo.toString());
 						}
-
 					}
 					else
 					{

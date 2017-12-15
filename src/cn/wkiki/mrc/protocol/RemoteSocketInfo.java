@@ -1,7 +1,6 @@
 package cn.wkiki.mrc.protocol;
 
 import java.net.Socket;
-import java.rmi.Remote;
 import java.sql.Date;
 import java.util.UUID;
 
