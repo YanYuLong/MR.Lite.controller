@@ -1,5 +1,7 @@
 package cn.wkiki.mrc.protocol;
 
+import cn.wkiki.mrc.protocol.impl.ClientMessageRecvier;
+
 /**
  * 与一个客户端连接的一次上下文
  * 
@@ -9,7 +11,7 @@ package cn.wkiki.mrc.protocol;
 public class ClientNetSessionContext
 {
 	// 数据发送器
-	private ClientMessageRecvier reciver;
+	private IClientMessageReciver reciver;
 
 	// 数据接收器
 	private ClientMessageSender sender;

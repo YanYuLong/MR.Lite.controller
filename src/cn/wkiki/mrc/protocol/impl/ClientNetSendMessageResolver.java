@@ -1,4 +1,6 @@
-package cn.wkiki.mrc.protocol;
+package cn.wkiki.mrc.protocol.impl;
+
+import cn.wkiki.mrc.protocol.ClientNetMessageResolver;
 
 /**
  * 将要发送给客户端的网络消息解析为指定的格式的解析器

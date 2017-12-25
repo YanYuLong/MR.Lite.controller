@@ -1,15 +1,13 @@
 package cn.wkiki.mrc.protocol;
 
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import cn.wkiki.mrc.protocol.ClientNetMessageResolver;
 import cn.wkiki.mrc.protocol.RemoteSocketInfo;
-import jdk.nashorn.internal.runtime.ECMAErrors;
 
 /**
  * 监听客户端数据接口的Listener
@@ -30,7 +28,10 @@ public class ClientListener
 	private ServerSocket socket = null;
 	// 客户端socket连接池
 	private SocketPool socketPool;
+	//监听线程
+	private  Thread thread ;
 
+	Logger logger = LogManager.getLogger(getClass());
 	public SocketPool getSocketPool()
 	{
 		return socketPool;
@@ -91,8 +92,9 @@ public class ClientListener
 		{
 			if (port > 0 && port < 65535)
 			{
+				logger.info("启动客户端监听：监听端口"+port);
 				socket = new ServerSocket(port);
-				Thread thread = new Thread(() -> {
+				thread= new Thread(() -> {
 					while (true)
 					{
 						try
