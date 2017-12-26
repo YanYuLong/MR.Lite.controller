@@ -11,8 +11,12 @@ import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sun.java_cup.internal.runtime.virtual_parse_stack;
 import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 
 import cn.wkiki.mrc.protocol.RemoteSocketInfo;
@@ -27,15 +31,20 @@ import sun.management.counter.Variability;
 @Component
 public class SocketPool
 {
+	Logger logger = LogManager.getLogger(getClass());
 	// 远程客户端连接信息表
 	HashMap<UUID, RemoteSocketInfo> socketTable = new HashMap<UUID, RemoteSocketInfo>();
-
 	// 扫描socket状态信息的后台线程
 	Thread scanThread;
-
 	// 读写锁
 	private ReadWriteLock lock = new ReentrantReadWriteLock();
-
+	private ClientListener listener;
+	
+	@Autowired
+	public void setListener(ClientListener listener)
+	{
+		this.listener = listener;
+	}
 	/**
 	 * Constructor
 	 */
@@ -100,19 +109,30 @@ public class SocketPool
 					// 客户端主动关闭了连接
 					if (socket.isInputShutdown())
 					{
-
+						UUID uuid = v.getUuid();
+						logger.info("uuid为"+uuid+"的远程客户端主动关闭了连接");
+						try{
+							socket.shutdownOutput();
+							socket.close();
+							socketTable.remove(k);
+						}
+						catch (Exception e) {
+							logger.error("被动关闭uuid为"+uuid+"的客户端失败 异常信息为"+e.getMessage());
+						}
 					}
 					else
 					{
 						try
 						{
+							//报告可读
 							if (socket.getInputStream().available() > 0)
 							{
-
+								this.listener.onSocketCanRead(v);
 							}
 						}
 						catch (Exception e)
 						{
+							logger.error("判断客户端"+k+"socket是否可读时发生异常，异常信息为"+e.getMessage());
 						}
 					}
 				});

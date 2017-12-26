@@ -1,5 +1,10 @@
 package cn.wkiki.mrc.protocol;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.wkiki.mrc.protocol.impl.ClientMessageRecvier;
 
 /**
@@ -8,31 +13,41 @@ import cn.wkiki.mrc.protocol.impl.ClientMessageRecvier;
  * @author yulongy
  *
  */
+@Component("sessionContext")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ClientNetSessionContext
 {
 	// 数据发送器
 	private IClientMessageReciver reciver;
 
 	// 数据接收器
-	private ClientMessageSender sender;
+	private IClientMessageSender sender;
 
 	// 客户端的远程连接
 	private RemoteSocketInfo remoteSocketInfo;
 
 	// Constructor
-	public ClientNetSessionContext(ClientMessageRecvier reciver,ClientMessageSender sender)
+	@Autowired
+	public ClientNetSessionContext(IClientMessageReciver reciver,IClientMessageSender sender)
 	{
 		this.reciver = reciver;
 		this.sender = sender;
 	}
 
-	/**
-	 * 远程客户端socket可读事件处理器
-	 * 
-	 * @param remoteSocketInfo
-	 */
-	public void onSocketReadable(RemoteSocketInfo remoteSocketInfo)
+	public RemoteSocketInfo getRemoteSocketInfo()
+	{
+		return remoteSocketInfo;
+	}
+
+	public void setRemoteSocketInfo(RemoteSocketInfo remoteSocketInfo)
 	{
 		this.remoteSocketInfo = remoteSocketInfo;
+	}
+	
+	/**
+	 * 触发可读逻辑
+	 */
+	public  void onSocketCanRead()
+	{
 	}
 }

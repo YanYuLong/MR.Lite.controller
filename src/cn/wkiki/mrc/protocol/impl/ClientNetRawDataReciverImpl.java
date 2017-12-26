@@ -3,6 +3,7 @@ package cn.wkiki.mrc.protocol.impl;
 import java.io.InputStream;
 import java.net.Socket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import cn.wkiki.mrc.protocol.ClientNetMessageResolver;
 import cn.wkiki.mrc.protocol.IClientNetRawDataReciver;
@@ -15,6 +16,7 @@ import cn.wkiki.mrc.protocol.RemoteSocketInfo;
  * @author yulongy
  *
  */
+@Component
 public class ClientNetRawDataReciverImpl implements IClientNetRawDataReciver
 {
 	/**
@@ -81,7 +83,4 @@ public class ClientNetRawDataReciverImpl implements IClientNetRawDataReciver
 		}
 		return result;
 	}
-
-	
-	
 }

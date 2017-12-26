@@ -1,5 +1,8 @@
 package cn.wkiki.mrc.protocol.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import cn.wkiki.mrc.protocol.ClientNetMessageResolver;
 import cn.wkiki.mrc.protocol.IClientMessageReciver;
 import cn.wkiki.mrc.protocol.IClientNetRawDataReciver;
@@ -11,6 +14,7 @@ import cn.wkiki.mrc.protocol.RemoteSocketInfo;
  * @author yulongy
  *
  */
+@Component
 public class ClientMessageRecvier implements IClientMessageReciver
 {
 	private ClientNetMessageResolver resolver;
@@ -22,6 +26,7 @@ public class ClientMessageRecvier implements IClientMessageReciver
 	}
 
 	@Override
+	@Autowired
 	public void setMessageResolver(ClientNetMessageResolver resolver)
 	{
 		this.resolver = resolver;
@@ -34,6 +39,7 @@ public class ClientMessageRecvier implements IClientMessageReciver
 	}
 
 	@Override
+	@Autowired
 	public void setRawDataReciver(IClientNetRawDataReciver reciver)
 	{
 		this.rawDataReciver = reciver;

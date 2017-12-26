@@ -1,29 +1,45 @@
 package cn.wkiki.util;
 
-import org.springframework.beans.BeansException;
+import javax.servlet.ServletContext;
+
+import org.apache.log4j.LogManager;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-public class ContextUtils implements ApplicationContextAware
+public class ContextUtils
 {
-
-	private ApplicationContext rootApplicationContext = null;
-
 	/**
-	 * 获取当前IOC容器的根容器
-	 * 
+	 * 获取当前web环境下的根Ioc容器
+	 * @param servletContext web容器环境
 	 * @return
 	 */
-	public ApplicationContext getRootApplicationContext()
+	public static ApplicationContext getRootContext(ServletContext servletContext)
 	{
-		return rootApplicationContext;
+		Object rootContext = servletContext.getAttribute("org.springframework.web.context.WebApplicationContext.ROOT");
+		if(rootContext instanceof ApplicationContext)
+		{
+			return (ApplicationContext) rootContext;
+		}
+		else {
+			LogManager.getLogger(ContextUtils.class).error("获取程序根Ioc容器错误");
+			return null;
+		}
 	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
+	
+	/**
+	 * 获取当前web环境下的web容器的Ioc容器
+	 * @param servletContext web容器环境
+	 * @return
+	 */
+	public static ApplicationContext getWebContainerContext(ServletContext servletContext)
 	{
-		// TODO Auto-generated method stub
-		rootApplicationContext = applicationContext;
+		Object rootContext = servletContext.getAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcherServlet");
+		if(rootContext instanceof ApplicationContext)
+		{
+			return (ApplicationContext) rootContext;
+		}
+		else {
+			LogManager.getLogger(ContextUtils.class).error("获取程序web容器Ioc器错误");
+			return null;
+		}
 	}
-
 }

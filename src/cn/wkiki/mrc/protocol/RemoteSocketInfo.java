@@ -3,6 +3,10 @@ package cn.wkiki.mrc.protocol;
 import java.net.Socket;
 import java.sql.Date;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import org.apache.catalina.valves.PersistentValve;
 
 /**
  * 远程客户端的连接信息
@@ -18,6 +22,36 @@ public class RemoteSocketInfo
 	private Date connectedTime;
 	// 标示一个远程客户端的一次连接的uuid
 	private UUID uuid;
+	// socket是否正在被通讯模块处理
+	private Boolean isDealNow;
+
+	private ReadWriteLock lock = new ReentrantReadWriteLock();
+
+	public boolean getIsDealNow()
+	{
+		try
+		{
+			lock.readLock().lock();
+			return isDealNow;
+		}
+		finally
+		{
+			lock.readLock().unlock();
+		}
+	}
+
+	public void setIsDealNow(boolean isDealNow)
+	{
+		try
+		{
+			lock.writeLock().lock();
+			this.isDealNow = isDealNow;
+		}
+		finally
+		{
+			lock.writeLock().unlock();
+		}
+	}
 
 	public RemoteSocketInfo()
 	{

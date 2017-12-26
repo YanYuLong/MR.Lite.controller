@@ -1,5 +1,7 @@
 package cn.wkiki.mrc.protocol.impl;
 
+import org.springframework.stereotype.Component;
+
 import cn.wkiki.mrc.protocol.ClientNetMessageResolver;
 
 /**
@@ -8,6 +10,7 @@ import cn.wkiki.mrc.protocol.ClientNetMessageResolver;
  * @author yulongy
  *
  */
+@Component
 public class ClientNetRecivedMessageResolver implements ClientNetMessageResolver
 {
 
