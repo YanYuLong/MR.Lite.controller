@@ -59,6 +59,7 @@ public class InitServlet implements Servlet
 			listener.setPort(listenPort);
 			listener.startListen();
 		}
+		ContextUtils.m_ServletContext=arg0.getServletContext();
 	}
 
 	@Override

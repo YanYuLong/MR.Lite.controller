@@ -8,7 +8,29 @@ import org.springframework.context.ApplicationContext;
 public class ContextUtils
 {
 	/**
+	 * 不要手动修改次变量
+	 */
+	public static ServletContext m_ServletContext;
+	
+	/**
 	 * 获取当前web环境下的根Ioc容器
+	 * @return
+	 */
+	public static ApplicationContext getRootContext()
+	{
+		return getRootContext(m_ServletContext);
+	}
+	/**
+	 * 获取当前web环境下的web容器的Ioc容器
+	 * @return
+	 */
+	public  static ApplicationContext getWebContainerContext()
+	{
+		return getWebContainerContext(m_ServletContext);
+	}
+	
+	/**
+	 * 获取指定web环境下的根Ioc容器
 	 * @param servletContext web容器环境
 	 * @return
 	 */
@@ -26,7 +48,7 @@ public class ContextUtils
 	}
 	
 	/**
-	 * 获取当前web环境下的web容器的Ioc容器
+	 * 获取指定web环境下的web容器的Ioc容器
 	 * @param servletContext web容器环境
 	 * @return
 	 */

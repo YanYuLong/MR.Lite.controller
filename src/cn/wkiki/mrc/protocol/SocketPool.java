@@ -21,6 +21,7 @@ import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 
 import cn.wkiki.mrc.protocol.RemoteSocketInfo;
 import sun.management.counter.Variability;
+import sun.util.logging.resources.logging;
 
 /**
  * 控制单元持有的socket连接池
@@ -38,8 +39,10 @@ public class SocketPool
 	Thread scanThread;
 	// 读写锁
 	private ReadWriteLock lock = new ReentrantReadWriteLock();
+	//通知listener可读事件
 	private ClientListener listener;
 	
+	private long interval;
 	@Autowired
 	public void setListener(ClientListener listener)
 	{
@@ -48,8 +51,9 @@ public class SocketPool
 	/**
 	 * Constructor
 	 */
-	public SocketPool()
+	public SocketPool(long interval)
 	{
+		this.interval = interval;
 		scanThread = new Thread(() -> {
 			ScanMethod();
 		});
@@ -141,7 +145,14 @@ public class SocketPool
 			{
 				lock.writeLock().unlock();
 			}
-
+			try
+			{
+				Thread.sleep(interval);
+			}
+			catch (InterruptedException e) {
+				logger.info("扫描线程接收到了InterruptedException 信息为:"+e.getMessage());
+			}
+			
 		}
 	}
 }
