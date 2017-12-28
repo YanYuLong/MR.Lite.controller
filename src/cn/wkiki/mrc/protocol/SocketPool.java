@@ -29,7 +29,6 @@ import sun.util.logging.resources.logging;
  * @author yulongy
  *
  */
-@Component
 public class SocketPool
 {
 	Logger logger = LogManager.getLogger(getClass());
@@ -57,6 +56,7 @@ public class SocketPool
 		scanThread = new Thread(() -> {
 			ScanMethod();
 		});
+		scanThread.setName("scanThread");
 		scanThread.start();
 	}
 

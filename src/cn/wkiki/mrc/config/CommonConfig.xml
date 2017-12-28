@@ -14,7 +14,10 @@
 	http://www.springframework.org/schema/context/spring-context-4.2.xsd
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+	<!--程序运行时参数配置类-->
 	<bean id="configInfo" class="cn.wkiki.util.ConfigInfo">
+		<!--扫描线程的间隔时间-->
 		<property name="scanInterval" value="1000"></property>
+		<property name="listenPort" value="11235"></property>
 	</bean>
 </beans>

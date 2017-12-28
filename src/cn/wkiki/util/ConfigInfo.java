@@ -9,6 +9,18 @@ public class ConfigInfo
 {
 	//扫描可用socket时间间隔
 	private long scanInterval;
+	//与客户端通讯的监听端口
+	private int listenPort;
+	
+	public int getListenPort()
+	{
+		return listenPort;
+	}
+
+	public void setListenPort(int listenPort)
+	{
+		this.listenPort = listenPort;
+	}
 
 	public long getScanInterval()
 	{

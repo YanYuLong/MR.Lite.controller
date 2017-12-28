@@ -41,23 +41,19 @@ public class InitServlet implements Servlet
 	@Override
 	public void init(ServletConfig arg0) throws ServletException
 	{
-		String listenPortStr = arg0.getInitParameter("ListenPort");
-		int listenPort=0;
-		try
-		{
-			 listenPort=Integer.parseInt(listenPortStr);
-		}
-		catch (Exception e) {
-			LogManager.getLogger(getClass()).error("客户端监听接口转换失败，异常信息为："+e.getMessage());
-			return ;
-		}
 		ApplicationContext context= ContextUtils.getRootContext(arg0.getServletContext());
 		if(context!=null)
 		{
 			LogManager.getLogger(getClass()).info("准备启动监听模块");
 			ClientListener listener= context.getBean("clientListener", cn.wkiki.mrc.protocol.ClientListener.class);
-			listener.setPort(listenPort);
-			listener.startListen();
+			try
+			{
+				listener.startListen();
+			}
+			catch (Exception e) {
+				LogManager.getLogger(getClass()).error("启动监听失败，失败异常信息为："+e.getMessage());
+			}
+			
 		}
 		ContextUtils.m_ServletContext=arg0.getServletContext();
 	}

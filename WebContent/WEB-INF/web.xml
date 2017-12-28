@@ -70,10 +70,6 @@
 	<servlet>
 		<servlet-name>initServlet</servlet-name>
 		<servlet-class>cn.wkiki.mrc.config.InitServlet</servlet-class>
-		<init-param>
-			<param-name>ListenPort</param-name>
-			<param-value>11235</param-value>
-		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 </web-app>

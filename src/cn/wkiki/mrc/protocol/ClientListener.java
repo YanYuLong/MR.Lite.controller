@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import cn.wkiki.mrc.protocol.RemoteSocketInfo;
+import cn.wkiki.util.ConfigInfo;
 import cn.wkiki.util.ContextUtils;
 
 /**
@@ -31,21 +32,19 @@ public class ClientListener
 	private SocketPool socketPool;
 	//监听线程
 	private  Thread thread;
-
-	private ServletContext servletContext;
 	
-	public void setServletContext(ServletContext servletContext)
+	public ClientListener(ConfigInfo configInfo)
 	{
-		this.servletContext=servletContext;
+		setPort(configInfo.getListenPort()); 
 	}
-	
+
 	Logger logger = LogManager.getLogger(getClass());
 	public SocketPool getSocketPool()
 	{
 		return socketPool;
 	}
 
-	@Autowired
+	@Autowired()
 	public void setSocketPool(SocketPool socketPool)
 	{
 		this.socketPool = socketPool;
@@ -90,7 +89,7 @@ public class ClientListener
 	 * 
 	 * @throws Exception
 	 */
-	public void startListen()
+	public void startListen() throws Exception
 	{
 		if (!listenStatus)
 		{
@@ -121,14 +120,31 @@ public class ClientListener
 						}
 					}
 				});
+				thread.setName("listenThread");
+				thread.start();
 				listenStatus = true;
 			}
 		}
+		else
+		{
+			throw new Exception("当前程序正在监听监听的端口为："+port);
+		}
 	}
 
+	/**
+	 * 停止监听客户端发送过来的网络数据
+	 */
+	public void stopListen()
+	{
+		setListenStatus(false);
+	}
+	/**
+	 * 扫描线程获取到有socket可读的事件处理函数
+	 * @param canReadSocketInfo
+	 */
 	public void onSocketCanRead(RemoteSocketInfo canReadSocketInfo)
 	{
-		ClientNetSessionContext sessionContext = ContextUtils.getRootContext(servletContext).getBean(cn.wkiki.mrc.protocol.ClientNetSessionContext.class);
+		ClientNetSessionContext sessionContext = ContextUtils.getRootContext().getBean(cn.wkiki.mrc.protocol.ClientNetSessionContext.class);
 		sessionContext.setRemoteSocketInfo(canReadSocketInfo);
 		sessionContext.onSocketCanRead();
 	}
