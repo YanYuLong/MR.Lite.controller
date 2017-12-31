@@ -32,7 +32,14 @@ public class ClientListener
 	private SocketPool socketPool;
 	//监听线程
 	private  Thread thread;
+	//线程池
+	private java.util.concurrent.ThreadPoolExecutor threadPool;
 	
+	@Autowired
+	public void setThreadPool(java.util.concurrent.ThreadPoolExecutor threadPoolExecutor)
+	{
+		this.threadPool = threadPoolExecutor;
+	}
 	public ClientListener(ConfigInfo configInfo)
 	{
 		setPort(configInfo.getListenPort()); 
@@ -146,6 +153,11 @@ public class ClientListener
 	{
 		ClientNetSessionContext sessionContext = ContextUtils.getRootContext().getBean(cn.wkiki.mrc.protocol.ClientNetSessionContext.class);
 		sessionContext.setRemoteSocketInfo(canReadSocketInfo);
-		sessionContext.onSocketCanRead();
+		threadPool.execute(new  Runnable() {
+			public void run() {
+				sessionContext.onSocketCanRead();
+			}
+		});
+		canReadSocketInfo.setIsDealNow(true);
 	}
 }

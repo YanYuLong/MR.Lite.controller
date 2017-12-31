@@ -2,13 +2,12 @@ package cn.wkiki.mrc.protocol.impl;
 
 import java.io.InputStream;
 import java.net.Socket;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import cn.wkiki.mrc.protocol.ClientNetMessageResolver;
 import cn.wkiki.mrc.protocol.IClientNetRawDataReciver;
 import cn.wkiki.mrc.protocol.RemoteSocketInfo;
-
 
 /**
  * 客户端网络原始数据流接收器(此处会对原始数据流的格式做约定)
@@ -19,6 +18,7 @@ import cn.wkiki.mrc.protocol.RemoteSocketInfo;
 @Component
 public class ClientNetRawDataReciverImpl implements IClientNetRawDataReciver
 {
+	Logger Logger = org.apache.log4j.LogManager.getLogger(getClass());
 	/**
 	 * 从远程客户端socket中读取此次发送来的原始数据信息
 	 * 
@@ -68,7 +68,8 @@ public class ClientNetRawDataReciverImpl implements IClientNetRawDataReciver
 					}
 					else
 					{
-						throw new RuntimeException("接收到客户端报文时发生异常，异常类型：报文负载分割符异常！" + remoteSocket.toString());
+						throw new RuntimeException("接收到客户端报文时发生异常，异常类型：报文负载分割符异常！" + remoteSocket.toString()
+								+ "接收到的报文头为：" + messageHeadBuff.toString());
 					}
 				}
 				else
@@ -79,7 +80,8 @@ public class ClientNetRawDataReciverImpl implements IClientNetRawDataReciver
 		}
 		catch (Exception e)
 		{
-			// TODO: handle exception
+			Logger.error("接收客户端消息报文时出现错误，错误信息为：" + e.getMessage());
+			throw e;
 		}
 		return result;
 	}

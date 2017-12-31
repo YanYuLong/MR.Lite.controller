@@ -2,26 +2,17 @@ package cn.wkiki.mrc.protocol;
 
 import java.net.InetAddress;
 import java.net.Socket;
-import java.rmi.Remote;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import com.sun.java_cup.internal.runtime.virtual_parse_stack;
-import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 
 import cn.wkiki.mrc.protocol.RemoteSocketInfo;
-import sun.management.counter.Variability;
-import sun.util.logging.resources.logging;
 
 /**
  * 控制单元持有的socket连接池
@@ -108,7 +99,14 @@ public class SocketPool
 			try
 			{
 				lock.writeLock().lock();
-				socketTable.forEach((k, v) -> {
+				Set<UUID> keys=  socketTable.keySet();
+				for(UUID k:keys)
+				{
+					RemoteSocketInfo v = socketTable.get(k);
+					if(v.getIsDealNow())
+					{
+						continue;
+					}
 					Socket socket = v.getRemoteSocket();
 					// 客户端主动关闭了连接
 					if (socket.isInputShutdown())
@@ -139,7 +137,7 @@ public class SocketPool
 							logger.error("判断客户端"+k+"socket是否可读时发生异常，异常信息为"+e.getMessage());
 						}
 					}
-				});
+				}
 			}
 			finally
 			{

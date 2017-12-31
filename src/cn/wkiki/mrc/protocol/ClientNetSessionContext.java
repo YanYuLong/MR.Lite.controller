@@ -5,8 +5,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import cn.wkiki.mrc.protocol.impl.ClientMessageRecvier;
-
+import cn.wkiki.mrc.protocol.IClientMessageReciver.ReciveData;
 /**
  * 与一个客户端连接的一次上下文
  * 
@@ -49,5 +48,12 @@ public class ClientNetSessionContext
 	 */
 	public  void onSocketCanRead()
 	{
+	 	ReciveData reciveRawData = reciver.reciveClientMessage(remoteSocketInfo);
+	 	if(reciveRawData==null)
+	 	{
+	 		remoteSocketInfo.setIsDealNow(false);
+	 		return ;
+	 	}
+	 	byte[] messageData= reciveRawData.getDataContent();
 	}
 }

@@ -1,5 +1,7 @@
 package cn.wkiki.mrc.config;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.log4j.LogManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,5 +22,16 @@ public class CommonConfig {
 		scanInterval = configInfo.getScanInterval();
 		LogManager.getLogger(getClass()).info("获取到scanInterval："+scanInterval);
 		return new SocketPool(scanInterval);
+	}
+	
+	@Bean("threadPool")
+	public java.util.concurrent.ThreadPoolExecutor getThreadPool(ConfigInfo configInfo)
+	{
+		int corePoolSize=configInfo.getCorePoolSize();
+		int maximumPoolSize=configInfo.getMaxPoolSize();
+		int keepAliveTime=configInfo.getKeepAliveTime();
+		TimeUnit unit=TimeUnit.SECONDS;
+		java.util.concurrent.LinkedBlockingDeque<Runnable> workQueue=new java.util.concurrent.LinkedBlockingDeque<>();
+		return new java.util.concurrent.ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 	}
 }

@@ -23,10 +23,14 @@ public class RemoteSocketInfo
 	// 标示一个远程客户端的一次连接的uuid
 	private UUID uuid;
 	// socket是否正在被通讯模块处理
-	private Boolean isDealNow;
+	private boolean isDealNow;
 
 	private ReadWriteLock lock = new ReentrantReadWriteLock();
 
+	/**
+	 * 返回当前客户端 socket是否已经分配给通讯模块执行
+	 * @return
+	 */
 	public boolean getIsDealNow()
 	{
 		try
@@ -39,7 +43,10 @@ public class RemoteSocketInfo
 			lock.readLock().unlock();
 		}
 	}
-
+	/**
+	 * 设置当前客户端socket是否分配给通讯模块执行的状态
+	 * @param isDealNow
+	 */
 	public void setIsDealNow(boolean isDealNow)
 	{
 		try
