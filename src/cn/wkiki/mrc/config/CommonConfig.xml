@@ -24,5 +24,8 @@
 		<property name="maxPoolSize" value="40"></property>
 		<property name="keepAliveTime" value="10"></property>
 		<property name="workQueueSize" value="50"></property>
+		<property name="sqlConnectionStr" value="jdbc:mysql://localhost:3306/mr"></property>
+		<property name="sqlUserName" value="root"></property>
+		<property name="sqlUserPwd" value="yyl112358?@?"></property>
 	</bean>
 </beans>

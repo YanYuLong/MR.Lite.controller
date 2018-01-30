@@ -19,6 +19,42 @@ public class ConfigInfo
 	private int keepAliveTime;
 	//任务等待队列大小
 	private int workQueueSize;
+	//数据库连接字符串
+	private String sqlConnectionStr;
+	//数据库用户名
+	private String sqlUserName;
+	//数据库用户密码
+	private String sqlUserPwd;
+	
+	public String getSqlConnectionStr()
+	{
+		return sqlConnectionStr;
+	}
+
+	public void setSqlConnectionStr(String sqlConnectionStr)
+	{
+		this.sqlConnectionStr = sqlConnectionStr;
+	}
+
+	public String getSqlUserName()
+	{
+		return sqlUserName;
+	}
+
+	public void setSqlUserName(String sqlUserName)
+	{
+		this.sqlUserName = sqlUserName;
+	}
+
+	public String getSqlUserPwd()
+	{
+		return sqlUserPwd;
+	}
+
+	public void setSqlUserPwd(String sqlUserPwd)
+	{
+		this.sqlUserPwd = sqlUserPwd;
+	}
 
 	public int getCorePoolSize() {
 		return corePoolSize;
