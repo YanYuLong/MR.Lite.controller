@@ -16,7 +16,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages={"cn.wkiki.mrc.mvc"})
+@ComponentScan(basePackages={"cn.wkiki.mrc.mvc","cn.wkiki.mrc.api"})
 public class WebConfig extends WebMvcConfigurerAdapter
 {
 	@Bean
