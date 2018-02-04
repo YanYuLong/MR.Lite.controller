@@ -27,5 +27,12 @@
 		<property name="sqlConnectionStr" value="jdbc:mysql://localhost:3306/mr"></property>
 		<property name="sqlUserName" value="root"></property>
 		<property name="sqlUserPwd" value="yyl112358?@?"></property>
+		<!-- 可信的控制服务结点IP地址 -->
+		<property name="authorizeManagerIP">
+			<list>
+				<value>127.0.0.1</value>
+				<value>192.168.1.100</value>
+			</list>
+		</property>
 	</bean>
 </beans>

@@ -1,5 +1,7 @@
 package cn.wkiki.util;
 
+import java.util.List;
+
 /**
  * 系统运行数据配置类
  * @author yulongy
@@ -25,7 +27,19 @@ public class ConfigInfo
 	private String sqlUserName;
 	//数据库用户密码
 	private String sqlUserPwd;
+	//可信的Controller结点IP地址
+	private List<String> authorizeManagerIP;
 	
+	public List<String> getAuthorizeManagerIP()
+	{
+		return authorizeManagerIP;
+	}
+
+	public void setAuthorizeManagerIP(List<String> authorizeManagerIP)
+	{
+		this.authorizeManagerIP = authorizeManagerIP;
+	}
+
 	public String getSqlConnectionStr()
 	{
 		return sqlConnectionStr;
