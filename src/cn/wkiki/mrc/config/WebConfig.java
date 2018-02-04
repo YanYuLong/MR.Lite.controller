@@ -1,6 +1,7 @@
 package cn.wkiki.mrc.config;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -9,10 +10,14 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+
+import cn.wkiki.mrc.interceptor.AuthPointInterceptor;
+import cn.wkiki.util.ContextUtils;
 
 @Configuration
 @EnableWebMvc
@@ -46,4 +51,15 @@ public class WebConfig extends WebMvcConfigurerAdapter
 		converter.setSupportedMediaTypes(mediaTypes);
 		super.extendMessageConverters(converters);
 	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry)
+	{
+		//添加控制节点认证拦截器
+		org.springframework.context.ApplicationContext context= ContextUtils.getRootContext();
+		AuthPointInterceptor authPointInterceptor= context.getBean(AuthPointInterceptor.class);
+		registry.addInterceptor(authPointInterceptor).addPathPatterns("/auth/dev/*");
+		super.addInterceptors(registry);
+	}
+	
 }

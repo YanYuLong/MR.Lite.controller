@@ -17,7 +17,7 @@ import cn.wkiki.util.ConfigInfo;
 
 @Configuration
 @ImportResource(locations = { "classpath*:/cn/wkiki/mrc/config/CommonConfig.xml" })
-@ComponentScan(basePackages={"cn.wkiki.mrc.protocol","cn.wkiki.mrc.protocol.impl","cn.wkiki.mrc.dao"})
+@ComponentScan(basePackages={"cn.wkiki.mrc.protocol","cn.wkiki.mrc.protocol.impl","cn.wkiki.mrc.dao","cn.wkiki.mrc.interceptor"})
 public class CommonConfig {
 	
 	@Bean("socketPool")

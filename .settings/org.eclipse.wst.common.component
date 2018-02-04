@@ -2,7 +2,6 @@
     <wb-module deploy-name="MR.Lite.Contro">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/mvc"/>
         <property name="context-root" value="MR.Lite.Contro"/>
         <property name="java-output-path" value="/MR.Lite.Contro/build/classes"/>
     </wb-module>

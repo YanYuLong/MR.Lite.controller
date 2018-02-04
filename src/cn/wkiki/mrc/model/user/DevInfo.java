@@ -13,6 +13,14 @@ public class DevInfo
 	
 	private  String devPwd;
 
+	public DevInfo() {};
+	
+	public DevInfo(String userId,String devId,String devPwd)
+	{
+		this.userId= userId;
+		this.devId=devId;
+		this.devPwd = devPwd;
+	}
 	public String getUserId()
 	{
 		return userId;
